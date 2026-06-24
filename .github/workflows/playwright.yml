@@ -13,8 +13,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Responsive viewports are set inside tests; one Chromium project avoids
-        # duplicate runs and cross-project snapshot drift on live sites.
         project: [desktop-chrome]
 
     steps:
@@ -34,11 +32,11 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Sync snapshot baselines for Linux CI
-        run: npx playwright test --project=${{ matrix.project }} --update-snapshots
+      - name: Sync Linux baselines for CI-stable suite
+        run: npx playwright test --project=${{ matrix.project }} --grep @ci --update-snapshots
 
-      - name: Run visual regression tests
-        run: npx playwright test --project=${{ matrix.project }}
+      - name: Run CI-stable visual tests (Hacker News)
+        run: npx playwright test --project=${{ matrix.project }} --grep @ci
 
       - name: Upload diff artifacts on failure
         uses: actions/upload-artifact@v4

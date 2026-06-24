@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test-fixtures';
 
-test.describe('Bing Visual Regression', () => {
+test.describe('Bing Visual Regression @live-site', () => {
   test.beforeEach(async ({ bingPage }) => {
     await bingPage.open();
     await bingPage.dismissCookieBanner();

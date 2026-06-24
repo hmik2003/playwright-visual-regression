@@ -27,7 +27,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Regenerate snapshots on Linux
-        run: npx playwright test --project=desktop-chrome --update-snapshots
+        run: npx playwright test --project=desktop-chrome --update-snapshots --grep @ci
 
       - name: Commit snapshot updates
         run: |

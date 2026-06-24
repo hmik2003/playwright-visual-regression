@@ -16,6 +16,19 @@ export async function hideDynamicElements(page: Page, selectors: string[]) {
   }, selectors);
 }
 
+export const HN_DYNAMIC_SELECTORS = [
+  '.comhead a',
+  '.age',
+  '.score',
+  '.titleline',
+  '.subtext',
+  '.rank',
+] as const;
+
+export async function hideHackerNewsDynamicContent(page: Page) {
+  await hideDynamicElements(page, [...HN_DYNAMIC_SELECTORS]);
+}
+
 export function getViewportLabel(width: number): string {
   if (width >= 1024) return 'desktop';
   if (width >= 768) return 'tablet';
