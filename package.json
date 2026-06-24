@@ -1,0 +1,22 @@
+{
+  "name": "playwright-visual-regression",
+  "version": "1.0.0",
+  "description": "Visual regression testing with Playwright screenshot comparison across viewports",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:update": "playwright test --update-snapshots",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": ["playwright", "visual-regression", "screenshot", "qa"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
