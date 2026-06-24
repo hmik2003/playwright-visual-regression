@@ -1,7 +1,8 @@
 # Playwright Visual Regression
 
 [![Visual Regression Tests](https://github.com/hmik2003/playwright-visual-regression/actions/workflows/playwright.yml/badge.svg)](https://github.com/hmik2003/playwright-visual-regression/actions/workflows/playwright.yml)
-[![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen)](https://github.com/hmik2003/playwright-visual-regression)
+[![Tests](https://img.shields.io/badge/CI%20tests-6%20passing-brightgreen)](https://github.com/hmik2003/playwright-visual-regression/actions/workflows/playwright.yml)
+[![Local suite](https://img.shields.io/badge/local%20suite-12%20tests-blue)](https://github.com/hmik2003/playwright-visual-regression)
 [![Playwright](https://img.shields.io/badge/Playwright-1.49-blue?logo=playwright)](https://playwright.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -50,7 +51,10 @@ npx playwright install
 ### Run Tests
 
 ```bash
-# Run all visual tests (compares against baselines)
+# CI-stable suite (Hacker News only — same as GitHub Actions)
+npx playwright test --grep @ci
+
+# Full suite including Bing live-site tests (local)
 npm test
 
 # Update baseline snapshots after intentional UI changes
@@ -60,6 +64,16 @@ npm run test:update
 npm run test:headed
 ```
 
+### CI vs local
+
+| Tag | Tests | Runs in CI? | Why |
+|-----|-------|-------------|-----|
+| `@ci` | 6 | Yes | Hacker News — stable layout, dynamic content masked |
+| `@live-site` | 6 | No (local only) | Bing — backgrounds/news change between runs; too flaky for CI gates |
+
+GitHub Actions runs **desktop-chrome** only, syncs Linux baselines, then verifies `@ci` tests.
+Use the **Update Visual Snapshots** workflow (manual dispatch) to refresh baselines after intentional UI changes.
+
 ### View Report
 
 ```bash
@@ -68,11 +82,12 @@ npm run report
 
 ## Test Coverage
 
-| Suite              | Tests | Targets                          |
-|--------------------|-------|----------------------------------|
-| Hacker News        | 3     | Full page, main content, header  |
-| Bing               | 3     | Full page, search box, logo      |
-| Responsive         | 6     | Both sites × 3 viewports         |
+| Suite              | Tests | Tag         | CI | Targets                          |
+|--------------------|-------|-------------|----|----------------------------------|
+| Hacker News        | 3     | `@ci`       | ✅ | Full page, main content, header  |
+| Responsive (HN)    | 3     | `@ci`       | ✅ | HN × desktop / tablet / mobile   |
+| Bing               | 3     | `@live-site`| ❌ | Homepage, search box, logo       |
+| Responsive (Bing)  | 3     | `@live-site`| ❌ | Bing × 3 viewports               |
 
 ## Visual Thresholds
 
