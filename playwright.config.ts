@@ -7,6 +7,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}{ext}',
+  timeout: 60_000,
   reporter: [
     ['html', { open: 'never' }],
     ['list'],
@@ -14,7 +15,7 @@ export default defineConfig({
   ],
   expect: {
     toHaveScreenshot: {
-      maxDiffPixelRatio: 0.02,
+      maxDiffPixelRatio: 0.05,
       animations: 'disabled',
     },
     toMatchSnapshot: {

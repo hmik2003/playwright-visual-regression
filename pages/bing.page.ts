@@ -4,7 +4,7 @@ import { SITES } from '../fixtures/test-data';
 export class BingPage extends BasePage {
   async open() {
     await this.goto(SITES.bing.url);
-    await this.waitForStableLayout(2000);
+    await this.waitForStableLayout(1000);
   }
 
   async dismissCookieBanner() {
@@ -20,7 +20,7 @@ export class BingPage extends BasePage {
   }
 
   get logo() {
-    return this.page.locator('#b_logo, .b_logo');
+    return this.page.locator('#b_logo, .b_logo, a[aria-label="Bing"], header a[href*="bing"]').first();
   }
 
   get homepageContent() {

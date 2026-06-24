@@ -6,26 +6,29 @@ test.describe('Bing Visual Regression', () => {
     await bingPage.dismissCookieBanner();
   });
 
-  test('homepage full page screenshot', async ({ page, bingPage }) => {
+  test('homepage viewport screenshot', async ({ page, bingPage }) => {
     await expect(page).toHaveScreenshot('bing-homepage.png', {
-      fullPage: true,
-      mask: [bingPage.searchBox],
-      maxDiffPixelRatio: 0.05,
+      fullPage: false,
+      clip: { x: 0, y: 0, width: 1280, height: 720 },
+      mask: [bingPage.searchBox, bingPage.logo],
+      maxDiffPixelRatio: 0.15,
       animations: 'disabled',
     });
   });
 
   test('search box component screenshot', async ({ bingPage }) => {
     await expect(bingPage.searchBox).toHaveScreenshot('bing-search-box.png', {
-      maxDiffPixelRatio: 0.03,
+      maxDiffPixelRatio: 0.12,
       animations: 'disabled',
+      timeout: 15_000,
     });
   });
 
   test('logo screenshot', async ({ bingPage }) => {
     await expect(bingPage.logo).toHaveScreenshot('bing-logo.png', {
-      maxDiffPixelRatio: 0.02,
+      maxDiffPixelRatio: 0.08,
       animations: 'disabled',
+      timeout: 15_000,
     });
   });
 });

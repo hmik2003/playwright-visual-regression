@@ -13,6 +13,6 @@ export class HackerNewsPage extends BasePage {
   }
 
   get header() {
-    return this.page.locator('tr:first-child');
+    return this.page.locator('#hnmain .pagetop, #hnmain table:first-of-type tbody tr').first();
   }
 }

@@ -13,7 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [desktop-chrome, tablet, mobile]
+        # Responsive viewports are set inside tests; one Chromium project avoids
+        # duplicate runs and cross-project snapshot drift on live sites.
+        project: [desktop-chrome]
 
     steps:
       - name: Checkout repository

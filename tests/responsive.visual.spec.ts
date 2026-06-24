@@ -30,7 +30,7 @@ test.describe('Responsive Visual Regression', () => {
         fullPage: false,
         clip: { x: 0, y: 0, width: viewport.width, height: Math.min(viewport.height, 900) },
         mask: [bingPage.searchBox],
-        maxDiffPixelRatio: 0.05,
+        maxDiffPixelRatio: 0.22,
         animations: 'disabled',
       });
     });

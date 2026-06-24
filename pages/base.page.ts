@@ -7,8 +7,8 @@ export class BasePage {
     await this.page.goto(url, { waitUntil: 'domcontentloaded' });
   }
 
-  async waitForStableLayout(timeoutMs = 2000) {
-    await this.page.waitForLoadState('networkidle').catch(() => {});
+  async waitForStableLayout(timeoutMs = 1000) {
+    await this.page.waitForLoadState('load').catch(() => {});
     await this.page.waitForTimeout(timeoutMs);
   }
 }
