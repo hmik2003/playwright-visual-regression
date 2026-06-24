@@ -1,5 +1,6 @@
 import pytest
-from playwright.sync_api import Page, expect
+
+from utils.screenshot_helpers import assert_screenshot
 
 
 @pytest.mark.live_site
@@ -9,28 +10,31 @@ class TestBingVisualRegression:
         bing_page.open()
         bing_page.dismiss_cookie_banner()
 
-    def test_homepage_viewport_screenshot(self, page: Page, bing_page):
-        expect(page).to_have_screenshot(
+    def test_homepage_viewport_screenshot(self, page, bing_page, request):
+        assert_screenshot(
+            page,
             "bing-homepage.png",
+            request,
             full_page=False,
             clip={"x": 0, "y": 0, "width": 1280, "height": 720},
             mask=[bing_page.search_box, bing_page.logo],
             max_diff_pixel_ratio=0.15,
-            animations="disabled",
         )
 
-    def test_search_box_component_screenshot(self, bing_page):
-        expect(bing_page.search_box).to_have_screenshot(
+    def test_search_box_component_screenshot(self, bing_page, request):
+        assert_screenshot(
+            bing_page.search_box,
             "bing-search-box.png",
+            request,
             max_diff_pixel_ratio=0.12,
-            animations="disabled",
             timeout=15_000,
         )
 
-    def test_logo_screenshot(self, bing_page):
-        expect(bing_page.logo).to_have_screenshot(
+    def test_logo_screenshot(self, bing_page, request):
+        assert_screenshot(
+            bing_page.logo,
             "bing-logo.png",
+            request,
             max_diff_pixel_ratio=0.08,
-            animations="disabled",
             timeout=15_000,
         )
