@@ -13,21 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-python@v5
         with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: package-lock.json
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
 
       - name: Regenerate snapshots on Linux
-        run: npx playwright test --project=desktop-chrome --update-snapshots --grep @ci
+        run: pytest -m ci --update-snapshots
 
       - name: Commit snapshot updates
         run: |

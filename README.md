@@ -1,13 +1,13 @@
-# Playwright Visual Regression
+# Playwright Visual Regression (Python)
 
 [![Visual Regression Tests](https://github.com/hmik2003/playwright-visual-regression/actions/workflows/playwright.yml/badge.svg)](https://github.com/hmik2003/playwright-visual-regression/actions/workflows/playwright.yml)
 [![Tests](https://img.shields.io/badge/CI%20tests-6%20passing-brightgreen)](https://github.com/hmik2003/playwright-visual-regression/actions/workflows/playwright.yml)
 [![Local suite](https://img.shields.io/badge/local%20suite-12%20tests-blue)](https://github.com/hmik2003/playwright-visual-regression)
-[![Playwright](https://img.shields.io/badge/Playwright-1.49-blue?logo=playwright)](https://playwright.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Playwright](https://img.shields.io/badge/Playwright-Python-blue?logo=playwright)](https://playwright.dev/python/)
+[![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Screenshot-based visual regression testing using Playwright's built-in `toHaveScreenshot` comparison. Tests real-world UIs — **Hacker News** and **Bing** — across desktop, tablet, and mobile viewports.
+Screenshot-based visual regression testing using Playwright's built-in `to_have_screenshot` comparison. Tests real-world UIs — **Hacker News** and **Bing** — across desktop, tablet, and mobile viewports.
 
 > **Portfolio highlight:** Demonstrates visual QA skills — pixel-diff gates, responsive testing, and CI-enforced screenshot baselines.
 
@@ -24,44 +24,45 @@ Screenshot-based visual regression testing using Playwright's built-in `toHaveSc
 ```
 playwright-visual-regression/
 ├── .github/workflows/     # CI pipeline with visual diff artifacts
+├── conftest.py            # pytest fixtures
 ├── fixtures/              # Viewport configs & site URLs
 ├── pages/                 # Page objects for target sites
-├── tests/                 # Visual test specs + baseline snapshots
+├── tests/                 # Visual test modules + baseline snapshots
 ├── utils/                 # Screenshot helper utilities
-├── playwright.config.ts
-└── package.json
+├── pytest.ini
+└── requirements.txt
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+
-- npm 9+
+- Python 3.11+
+- pip
 
 ### Installation
 
 ```bash
 git clone https://github.com/hmik2003/playwright-visual-regression.git
 cd playwright-visual-regression
-npm install
-npx playwright install
+pip install -r requirements.txt
+playwright install
 ```
 
 ### Run Tests
 
 ```bash
 # CI-stable suite (Hacker News only — same as GitHub Actions)
-npx playwright test --grep @ci
+pytest -m ci
 
 # Full suite including Bing live-site tests (local)
-npm test
+pytest
 
 # Update baseline snapshots after intentional UI changes
-npm run test:update
+pytest --update-snapshots
 
 # Headed mode for debugging
-npm run test:headed
+pytest --headed
 ```
 
 ### CI vs local
@@ -69,25 +70,19 @@ npm run test:headed
 | Tag | Tests | Runs in CI? | Why |
 |-----|-------|-------------|-----|
 | `@ci` | 6 | Yes | Hacker News — stable layout, dynamic content masked |
-| `@live-site` | 6 | No (local only) | Bing — backgrounds/news change between runs; too flaky for CI gates |
+| `@live_site` | 6 | No (local only) | Bing — backgrounds/news change between runs; too flaky for CI gates |
 
-GitHub Actions runs **desktop-chrome** only, syncs Linux baselines, then verifies `@ci` tests.
+GitHub Actions syncs Linux baselines, then verifies `@ci` tests only.
 Use the **Update Visual Snapshots** workflow (manual dispatch) to refresh baselines after intentional UI changes.
-
-### View Report
-
-```bash
-npm run report
-```
 
 ## Test Coverage
 
-| Suite              | Tests | Tag         | CI | Targets                          |
-|--------------------|-------|-------------|----|----------------------------------|
-| Hacker News        | 3     | `@ci`       | ✅ | Full page, main content, header  |
-| Responsive (HN)    | 3     | `@ci`       | ✅ | HN × desktop / tablet / mobile   |
-| Bing               | 3     | `@live-site`| ❌ | Homepage, search box, logo       |
-| Responsive (Bing)  | 3     | `@live-site`| ❌ | Bing × 3 viewports               |
+| Suite              | Tests | Tag          | CI | Targets                          |
+|--------------------|-------|--------------|----|----------------------------------|
+| Hacker News        | 3     | `@ci`        | ✅ | Full page, main content, header  |
+| Responsive (HN)    | 3     | `@ci`        | ✅ | HN × desktop / tablet / mobile   |
+| Bing               | 3     | `@live_site` | ❌ | Homepage, search box, logo       |
+| Responsive (Bing)  | 3     | `@live_site` | ❌ | Bing × 3 viewports               |
 
 ## Visual Thresholds
 
@@ -101,15 +96,16 @@ npm run report
 When a site legitimately changes appearance:
 
 ```bash
-npm run test:update
+pytest --update-snapshots
 git add tests/**/*-snapshots/
 git commit -m "chore: update visual baselines"
 ```
 
 ## Tech Stack
 
-- [Playwright](https://playwright.dev/) — visual comparison engine
-- [TypeScript](https://www.typescriptlang.org/) — type-safe tests
+- [Playwright for Python](https://playwright.dev/python/) — visual comparison engine
+- [pytest](https://docs.pytest.org/) — test runner
+- [pytest-playwright](https://github.com/microsoft/playwright-pytest) — browser fixtures
 - [GitHub Actions](https://github.com/features/actions) — CI with diff artifacts
 
 ## License
