@@ -1,0 +1,40 @@
+name: Update Visual Snapshots
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-snapshots:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Regenerate snapshots on Linux
+        run: npx playwright test --project=desktop-chrome --update-snapshots
+
+      - name: Commit snapshot updates
+        run: |
+          git -c user.name="hmik2003" -c user.email="hmik2003@users.noreply.github.com" add tests/**/*-snapshots/
+          if git diff --staged --quiet; then
+            echo "No snapshot changes to commit."
+          else
+            git -c user.name="hmik2003" -c user.email="hmik2003@users.noreply.github.com" commit -m "Update visual snapshot baselines from Linux CI"
+            git push
+          fi

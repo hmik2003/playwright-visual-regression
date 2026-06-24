@@ -34,6 +34,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Sync snapshot baselines for Linux CI
+        run: npx playwright test --project=${{ matrix.project }} --update-snapshots
+
       - name: Run visual regression tests
         run: npx playwright test --project=${{ matrix.project }}
 
